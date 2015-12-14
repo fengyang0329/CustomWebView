@@ -10,12 +10,14 @@
 #import "NJKWebViewProgress.h"
 #import "NJKWebViewProgressView.h"
 
+NS_ASSUME_NONNULL_BEGIN
 @protocol  YWWebViewDelegate <NSObject>
 
 @optional
-- (void)webViewDidStartLoad;
-- (void)webViewDidFinishLoad;
-- (void)webviewDidFailLoadWithError:(NSString *)errorString;
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType;
+- (void)webViewDidStartLoad:(UIWebView *)webView;
+- (void)webViewDidFinishLoad:(UIWebView *)webView;
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(nullable NSError *)error;
 
 @end
 
@@ -37,3 +39,5 @@
 
 -  (void)reloadRequest;
 @end
+
+NS_ASSUME_NONNULL_END

@@ -117,19 +117,21 @@
 #pragma mark UIWebViewDelegate
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
-//    NSLog(@"navigationType:%d",navigationType);
+    if (self.delegate && [self.delegate respondsToSelector:@selector(webView:shouldStartLoadWithRequest:navigationType:)]) {
+       return [self.delegate webView:webView shouldStartLoadWithRequest:request navigationType:navigationType];
+    }
     return YES;
 }
 - (void)webViewDidStartLoad:(UIWebView *)webView
 {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(webViewDidStartLoad)]) {
-        [self.delegate webViewDidStartLoad];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(webViewDidStartLoad:)]) {
+        [self.delegate webViewDidStartLoad:webView];
     }
 }
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(webViewDidFinishLoad)]) {
-        [self.delegate webViewDidFinishLoad];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(webViewDidFinishLoad:)]) {
+        [self.delegate webViewDidFinishLoad:webView];
     }
 }
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(nullable NSError *)error
@@ -138,8 +140,8 @@
                              @";<html><center><font size=+5 color='red'>An error occurred:<br>%@<;/font></center></html>",
                              error.localizedDescription];
     NSLog(@"error:%@",errorString);
-    if (self.delegate && [self.delegate respondsToSelector:@selector(webviewDidFailLoadWithError:)]) {
-        [self.delegate webviewDidFailLoadWithError:errorString];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(webView:didFailLoadWithError:)]) {
+        [self.delegate webView:webView didFailLoadWithError:error];
     }
 }
 #pragma mark - NJKWebViewProgressDelegate
